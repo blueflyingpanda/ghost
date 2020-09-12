@@ -15,7 +15,7 @@ body{
 	border-radius: 75px 75px 0px 0px;
 	position: absolute;
 	cursor: grab;
-	/*animation: floating 3s infinite ease-in-out;*/
+	animation: floating 3s infinite ease-in-out;
 }
 
 @keyframes floating{
