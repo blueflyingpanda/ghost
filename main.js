@@ -2,8 +2,8 @@ let face, follow, rect, left, topp, mouseX, mouseY, step, dist;
 
 const MID_X = 85;
 const MID_Y = 75;
-const REFRESH = 10;
-const MAX_STEP = 20;
+const REFRESH = 7;
+const MAX_STEP = 10;
 
 function onMouseMove(event){
 	if (left > mouseX + MID_X)
