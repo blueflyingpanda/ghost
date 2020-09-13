@@ -10,8 +10,8 @@ function onMouseMove(event){
 		document.getElementById("face").style.left = "10px";
 	else if (left < mouseX - MID_X)
 		document.getElementById("face").style.left = "40px";
-	else
-		document.getElementById("face").style.left = face;
+	//else 
+	//	document.getElementById("face").style.left = face;
 	mouseX = event.x;
 	mouseY = event.y;
 }
