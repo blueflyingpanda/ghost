@@ -6,12 +6,20 @@ const REFRESH = 7;
 const MAX_STEP = 10;
 
 function onMouseMove(event){
-	if (left > mouseX + MID_X)
-		document.getElementById("face").style.left = "10px";
-	else if (left < mouseX - MID_X)
-		document.getElementById("face").style.left = "40px";
-	//else 
-	//	document.getElementById("face").style.left = face;
+	if (window.innerWidth > 1000)
+	{
+		if (left > mouseX + MID_X)
+			document.getElementById("face").style.left = "10px";
+		else if (left < mouseX - MID_X)
+			document.getElementById("face").style.left = "40px";
+		else 
+			document.getElementById("face").style.left = face;
+	}else{
+		if (window.innerWidth/2 > event.x)
+			document.getElementById("face").style.left = "10px";
+		else
+			document.getElementById("face").style.left = "40px";
+	}
 	mouseX = event.x;
 	mouseY = event.y;
 }
