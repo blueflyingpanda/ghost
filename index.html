@@ -5,9 +5,8 @@
 		<meta charset='utf-8'>
 		<link rel="stylesheet" href="style.css">
 		<link rel="icon" href="icon.png">
-	<script src="main.js"></script>
 	</head>
-	<body onload = "followMouse();" onclick="">
+	<body onclick="">
 		<div id="ghost">
 			<div id="face">
 				<div class="eyes">
@@ -31,49 +30,6 @@
 				<span></span>
 			</div>
 		</div>
-
-		<script>
-
-			var $ = document.querySelector.bind(document);
-			var $on = document.addEventListener.bind(document);
-	   
-			var xmouse, ymouse;
-			$on('mousemove', function (e) {
-				 xmouse = e.clientX || e.pageX;
-				 ymouse = e.clientY || e.pageY;
-			});
-	   
-			var ball = $('#ghost');
-			var x = void 0,
-				 y = void 0,
-				 dx = void 0,
-				 dy = void 0,
-				 tx = 0,
-				 ty = 0,
-				 key = -1;
-	   
-			var followMouse = function followMouse() {
-				 key = requestAnimationFrame(followMouse);
-
-				 if(!x || !y) {
-					  x = xmouse;
-					  y = ymouse;
-				 } else {
-					  dx = (xmouse - x) * 0.03;
-					  dy = (ymouse - y) * 0.03;
-					  if(Math.abs(dx) + Math.abs(dy) < 0.1) {
-						   x = xmouse;
-						   y = ymouse;
-					  } else {
-						   x += dx;
-						   y += dy;
-					  }
-				 }
-				 ball.style.left = x - 75 + 'px';
-				 ball.style.top = y - 75 + 'px';
-			};
-	   
-			</script>
-
+	<script src="main.js"></script>
 	</body>
 </html>
