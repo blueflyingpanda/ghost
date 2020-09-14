@@ -4,6 +4,7 @@ const MID_X = 85;
 const MID_Y = 75;
 const REFRESH = 7;
 const MAX_STEP = 10;
+const SLOWNESS = 50;
 
 function onMouseMove(event){
 	if (window.innerWidth > 1366)
@@ -28,7 +29,7 @@ function followMouse(){
 	if (mouseX == left && mouseY == topp)
 		return ;
 	dist = Math.sqrt((mouseX - left)*(mouseX - left) + (mouseY - topp)*(mouseY - topp));
-	step = (dist/10 > MAX_STEP) ? MAX_STEP : dist/10; 
+	step = (dist/SLOWNESS > MAX_STEP) ? MAX_STEP : dist/SLOWNESS; 
 	left= step/dist * (mouseX - left) + left;
 	topp = step/dist * (mouseY - topp) + topp;
 	follow.style.top = topp - MID_Y + "px";
