@@ -41,7 +41,7 @@ function followMouse(){
 
 function changeBgColor(event){
 	if(event.keyCode == 32){
-		document.getElementsByTagName("body")[0].style.backgroundColor = bg[i%bg.length];
+		document.getElementsByTagName("body")[0].style.backgroundColor = bg[i%bg.length]; //bg[Math.floor(Math.random()*bg.length)];
 		i++;
 	}
 }
