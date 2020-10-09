@@ -1,4 +1,6 @@
 let face, follow, rect, left, topp, mouseX, mouseY, step, dist, load;
+let bg = ["grey", "#2c3a47", "#2c2c47", "#472c42", "#2c3f47", "#2c473e", "#472c2c"];
+let i = 0;
 
 const MID_X = 85;
 const MID_Y = 75;
@@ -37,6 +39,13 @@ function followMouse(){
 	follow.style.left = left - MID_X + "px";
 }
 
+function changeBgColor(event){
+	if(event.keyCode == 32){
+		document.getElementsByTagName("body")[0].style.backgroundColor = bg[i%bg.length];
+		i++;
+	}
+}
+
 function start(){
 	load.style.display = "None";
 	follow.style.display = "Block";
@@ -44,6 +53,7 @@ function start(){
 	window.addEventListener('mousemove', onMouseMove);
 }
 
+window.addEventListener("keydown", changeBgColor);
 face = document.getElementById("face").style.left;
 follow = document.getElementById("ghost");
 load = document.getElementsByClassName("loadingScreen")[0];
