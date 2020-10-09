@@ -1,10 +1,11 @@
-let face, follow, rect, left, topp, mouseX, mouseY, step, dist;
+let face, follow, rect, left, topp, mouseX, mouseY, step, dist, load;
 
 const MID_X = 85;
 const MID_Y = 75;
 const REFRESH = 7;
 const MAX_STEP = 10;
 const SLOWNESS = 50;
+const LOADING = 2000;
 
 function onMouseMove(event){
 	if (window.innerWidth > 1366)
@@ -36,8 +37,16 @@ function followMouse(){
 	follow.style.left = left - MID_X + "px";
 }
 
+function start(){
+	load.style.display = "None";
+	follow.style.display = "Block";
+	window.setInterval(followMouse, REFRESH);
+	window.addEventListener('mousemove', onMouseMove);
+}
+
 face = document.getElementById("face").style.left;
 follow = document.getElementById("ghost");
+load = document.getElementsByClassName("loadingScreen")[0];
 rect = follow.getBoundingClientRect();
 left = rect.x;
 topp = rect.y;
@@ -45,5 +54,6 @@ follow.style.top = topp - MID_Y + "px";
 follow.style.left = left - MID_X + "px";
 mouseX = rect.x;
 mouseY = rect.y;
-window.setInterval(followMouse, REFRESH);
-window.addEventListener('mousemove', onMouseMove);
+follow.style.display = "None";
+setTimeout(start, LOADING)
+
