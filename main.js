@@ -16,7 +16,7 @@ function onMouseMove(event){
 			document.getElementById("face").style.left = "10px";
 		else if (left < mouseX - MID_X)
 			document.getElementById("face").style.left = "40px";
-		else 
+		else
 			document.getElementById("face").style.left = face;
 	}else{
 		if (left > event.x)
@@ -32,7 +32,7 @@ function followMouse(){
 	if (mouseX == left && mouseY == topp)
 		return ;
 	dist = Math.sqrt((mouseX - left)*(mouseX - left) + (mouseY - topp)*(mouseY - topp));
-	step = (dist/SLOWNESS > MAX_STEP) ? MAX_STEP : dist/SLOWNESS; 
+	step = (dist/SLOWNESS > MAX_STEP) ? MAX_STEP : dist/SLOWNESS;
 	left= step/dist * (mouseX - left) + left;
 	topp = step/dist * (mouseY - topp) + topp;
 	follow.style.top = topp - MID_Y + "px";
@@ -46,12 +46,69 @@ function changeBgColor(event){
 	}
 }
 
+var canChange = false;
+
+function chbgcolor(canChange){
+	if (canChange){
+		document.getElementsByTagName("body")[0].style.backgroundColor = bg[i%bg.length];
+			i++;
+	}
+}
+
 function start(){
 	load.style.display = "None";
 	follow.style.display = "Block";
 	window.setInterval(followMouse, REFRESH);
 	window.addEventListener('mousemove', onMouseMove);
 }
+
+////////////////////////////////////////////////////////////
+var begin;
+
+function buttonPressed(b) {
+	if (typeof(b) == "object") {
+	  return b.pressed;//for buttons
+	}
+	return b == 1.0;//for axes
+}
+
+window.addEventListener("gamepadconnected", function(e) {
+	console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.", e.gamepad.index, e.gamepad.id, e.gamepad.buttons.length, e.gamepad.axes.length);
+	gameLoop();
+});
+
+window.addEventListener("gamepaddisconnected", function(e) {
+	console.log("Gamepad disconnected from index %d: %s", e.gamepad.index, e.gamepad.id);
+	cancelAnimationFrame(begin);
+});
+
+function pollGamepads() {
+  var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+  for (var i = 0; i < gamepads.length; i++) {
+    var gp = gamepads[i];
+    if (gp) {
+      gameLoop();
+    }
+  }
+}
+
+function gameLoop() {
+	var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+	if (!gamepads) {
+	  return;
+	}
+
+	var gp = gamepads[0];
+	if (buttonPressed(gp.buttons[0])) {
+
+		setTimeout(function() {canChange = true}, 250);
+		chbgcolor(canChange);
+		canChange = false;
+	}
+
+	begin = requestAnimationFrame(gameLoop);
+}
+/////////////////////////////////////////////////////////////
 
 window.addEventListener("keydown", changeBgColor);
 face = document.getElementById("face").style.left;
@@ -65,5 +122,5 @@ follow.style.left = left - MID_X + "px";
 mouseX = rect.x;
 mouseY = rect.y;
 follow.style.display = "None";
-setTimeout(start, LOADING)
+setTimeout(start, LOADING);
 
