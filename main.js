@@ -1,32 +1,57 @@
-let face, follow, rect, left, topp, mouseX, mouseY, step, dist, load, login, nickname, btn;
+let face, follow, rect, left, topp, mouseX, mouseY, step, dist, load, login, nickname, btn, timerWrap, timer, counterWrap, counter, result;
 let bg = ["grey", "#2c3a47", "#2c2c47", "#472c42", "#2c3f47", "#2c473e", "#472c2c"];
 let pumpkins = document.getElementsByClassName("pumpkin");
 let i = 0;
+let pumpkinsLeft;
+let interval_timer, interval_mouse;
+let hits = [];
 
-const MID_X = 75;
-const MID_Y = 75;
+const MID_X = 35;
+const MID_Y = 35;
 const REFRESH = 7;
+const UPD_TIMER = 100;
 const MAX_STEP = 10;
 const SLOWNESS = 50;
 const LOADING = 2000;
+const HIT_BOX = 50;
 
 function onMouseMove(event){
 	if (window.innerWidth > 1366)
 	{
 		if (left > mouseX + MID_X)
-			document.getElementById("face").style.left = "10px";
+			document.getElementById("face").style.left = "5px";
 		else if (left < mouseX - MID_X)
-			document.getElementById("face").style.left = "40px";
+			document.getElementById("face").style.left = "20px";
 		else
 			document.getElementById("face").style.left = face;
 	}else{
 		if (left > event.x)
-			document.getElementById("face").style.left = "10px";
+			document.getElementById("face").style.left = "5px";
 		else
-			document.getElementById("face").style.left = "40px";
+			document.getElementById("face").style.left = "20px";
 	}
 	mouseX = event.x;
 	mouseY = event.y;
+}
+
+function checkColission(){
+	for (let index = 0; index < hits.length; index++) {
+		if(pumpkins[index].style.visibility != "hidden" && left - MID_X  > hits[index][0] - HIT_BOX && left - MID_X  < hits[index][0] + HIT_BOX && topp - MID_Y > hits[index][1] - HIT_BOX && topp - MID_Y < hits[index][1] + HIT_BOX){
+			console.log("if for index:", index);
+			pumpkins[index].style.visibility = "hidden";
+			counter.textContent = "left: " + --pumpkinsLeft;
+		}
+ 	}
+}
+
+function displayResults(){
+	var res = document.getElementById("res");
+	var score = document.getElementById("score");
+	result.style.display = "block";
+	res.textContent = nickname + res.textContent;
+	score.textContent = parseFloat(timer.textContent, 10) + " s";
+	var rebtn =document.getElementById("rebtn");
+	rebtn.onclick = resubmitHandler;
 }
 
 function followMouse(){
@@ -38,6 +63,12 @@ function followMouse(){
 	topp = step/dist * (mouseY - topp) + topp;
 	follow.style.top = topp - MID_Y + "px";
 	follow.style.left = left - MID_X + "px";
+	checkColission();
+	if (pumpkinsLeft == 0){
+		clearInterval(interval_timer);
+		window.clearInterval(interval_mouse);
+		displayResults();
+	}
 }
 
 function changeBgColor(event){
@@ -63,6 +94,27 @@ function start(){
 	for (let index = 0; index < pumpkins.length; index++) {
 		pumpkins[index].style.display = "block";
 	}
+}
+
+function updTimer(){
+	let num = parseFloat(timer.textContent, 10);
+	if (isNaN(num))
+		num = 0;
+	timer.textContent = (num + UPD_TIMER / 1000).toFixed(1) + " s";
+}
+
+function resubmitHandler(){
+	var res = document.getElementById("res");
+	res.textContent = ", catching the pumpkins took you:";
+	result.style.display = "None";
+	for (let index = 0; index < pumpkins.length; index++) {
+		pumpkins[index].style.visibility = "visible";
+	}
+	pumpkinsLeft = pumpkins.length;
+	counter.textContent = "left: " + pumpkinsLeft;
+	timer.textContent = "0.0 s";
+	interval_timer = setInterval(updTimer, UPD_TIMER);
+	interval_mouse = window.setInterval(followMouse, REFRESH);
 }
 
 function submitHandler(){
@@ -93,8 +145,33 @@ function submitHandler(){
 	pumpkins[18].style.transform = "translate(150%, -250%)";
 	pumpkins[19].style.transform = "translate(-100%, -50%)";
 	pumpkins[20].style.transform = "translate(-50%, 250%)";
-	window.setInterval(followMouse, REFRESH);
-	window.addEventListener('mousemove', onMouseMove);
+
+	hits.push([Math.round(pumpkins[0].getBoundingClientRect().x), Math.round(pumpkins[0].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[1].getBoundingClientRect().x), Math.round(pumpkins[1].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[2].getBoundingClientRect().x), Math.round(pumpkins[2].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[3].getBoundingClientRect().x), Math.round(pumpkins[3].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[4].getBoundingClientRect().x), Math.round(pumpkins[4].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[5].getBoundingClientRect().x), Math.round(pumpkins[5].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[6].getBoundingClientRect().x), Math.round(pumpkins[6].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[7].getBoundingClientRect().x), Math.round(pumpkins[7].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[8].getBoundingClientRect().x), Math.round(pumpkins[8].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[9].getBoundingClientRect().x), Math.round(pumpkins[9].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[10].getBoundingClientRect().x), Math.round(pumpkins[10].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[11].getBoundingClientRect().x), Math.round(pumpkins[11].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[12].getBoundingClientRect().x), Math.round(pumpkins[12].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[13].getBoundingClientRect().x), Math.round(pumpkins[13].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[14].getBoundingClientRect().x), Math.round(pumpkins[14].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[15].getBoundingClientRect().x), Math.round(pumpkins[15].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[16].getBoundingClientRect().x), Math.round(pumpkins[16].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[17].getBoundingClientRect().x), Math.round(pumpkins[17].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[18].getBoundingClientRect().x), Math.round(pumpkins[18].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[19].getBoundingClientRect().x), Math.round(pumpkins[19].getBoundingClientRect().y)]);
+	hits.push([Math.round(pumpkins[20].getBoundingClientRect().x), Math.round(pumpkins[20].getBoundingClientRect().y)]);
+
+	interval_timer = setInterval(updTimer, UPD_TIMER);
+	pumpkinsLeft = pumpkins.length;
+	counter.textContent = "left: " + pumpkinsLeft;
+	interval_mouse = window.setInterval(followMouse, REFRESH);
 }
 
 ////////////////////////////////////////////////////////////
@@ -116,6 +193,8 @@ window.addEventListener("gamepaddisconnected", function(e) {
 	console.log("Gamepad disconnected from index %d: %s", e.gamepad.index, e.gamepad.id);
 	cancelAnimationFrame(begin);
 });
+
+window.addEventListener('mousemove', onMouseMove);
 
 function pollGamepads() {
   var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
@@ -149,8 +228,13 @@ window.addEventListener("keydown", changeBgColor);
 face = document.getElementById("face").style.left;
 follow = document.getElementById("ghost");
 btn = document.getElementById("btn");
+timerWrap = document.getElementById("timerWrap");
+timer = document.getElementById("timer");
+counterWrap = document.getElementById("counterWrap");
+counter = document.getElementById("counter");
 btn.onclick = submitHandler;
 login = document.getElementsByClassName("box")[0];
+result = document.getElementsByClassName("box")[1];
 load = document.getElementsByClassName("loadingScreen")[0];
 rect = follow.getBoundingClientRect();
 left = rect.x;
